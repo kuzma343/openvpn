@@ -1,0 +1,34 @@
+backup.sh
+--------------------------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+# Налаштування
+CONTAINER_NAME="mysql-container"
+DB_NAME="qwerty"
+DB_USER="root"
+DB_PASSWORD="Qwerty-1"
+BACKUP_DIR="/home/kuzma/backups"
+DATE=$(date +"%Y%m%d")
+BACKUP_PATH="$BACKUP_DIR/backup_$DATE.sql"
+
+# Перевірка існування директорії для бекапу
+if [ ! -d "$BACKUP_DIR" ]; then
+  mkdir -p "$BACKUP_DIR"
+fi
+
+# Виконання команди бекапу
+docker exec $CONTAINER_NAME /usr/bin/mysqldump -u $DB_USER --password=$DB_PASSWORD $DB_NAME > $BACKUP_PATH
+
+-------------------------------------------------------------------------------------------------------------------
+chmod +x backup.sh
+bash backup.sh
+команда щоб відкатитися назад по бекапу
+docker exec -i mysql-container mysql -u root --password=Qwerty-1 qwerty < /home/kuzma/backup.sql
+------------------------------------------------------------------------------------------------------
+АВТОМАТИЗАЦІЯ
+
+Відкрийте crontab файл для редагування:
+crontab -e
+
+Додайте наступну лінію до файлу crontab, щоб запускати скрипт щодня о 2 годині ночі (ви можете змінити час на бажаний):
+0 2 * * * /path/to/backup.sh
