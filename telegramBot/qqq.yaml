@@ -1,0 +1,36 @@
+---
+- name: Налаштувати Docker на сервері
+  hosts: all
+  become: yes  # Використовуємо sudo
+
+  tasks:
+    - name: Оновити apt
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: Встановити Docker
+      apt:
+        name: docker.io
+        state: present
+      become: yes
+
+    - name: Запустити Docker сервіс
+      systemd:
+        name: docker
+        state: started
+      become: yes
+
+    - name: Додати користувача до групи Docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      become: yes
+
+    - name: Перезавантажити Docker сервіс
+      systemd:
+        name: docker
+        state: restarted
+      become: yes
+

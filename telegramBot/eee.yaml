@@ -1,0 +1,11 @@
+- name: Зупинка контейнера Nginx
+  hosts: all  # Замініть це на вашу цільову машину або групу машин
+  become: yes
+
+  tasks:
+    - name: Зупинити контейнер Nginx
+      docker_container:
+        name: nginx_container
+        state: stopped
+      become: yes
+

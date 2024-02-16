@@ -1,0 +1,21 @@
+---
+- name: Запуск контейнера Nginx за допомогою Docker
+  hosts: all  # Замініть це на вашу цільову машину або групу машин
+  become: yes
+
+  tasks:
+    - name: Встановити Docker
+      apt:
+        name: docker.io
+        state: present
+      become: yes
+
+    - name: Запустити контейнер Nginx
+      docker_container:
+        name: nginx_container
+        image: nginx
+        ports:
+          - "8080:80"
+        state: started
+      become: yes
+

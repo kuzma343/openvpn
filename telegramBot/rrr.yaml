@@ -1,0 +1,10 @@
+---
+- name: Видалити контейнер Nginx
+  hosts: all
+  become: yes  # Запит підняття привілеїв sudo
+
+  tasks:
+    - name: Видалити контейнер Nginx
+      command: docker rm -f nginx_container_name  # Замініть nginx_container_name на ім'я вашого контейнера Nginx
+      become: yes
+
